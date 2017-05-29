@@ -12,25 +12,29 @@ import {Login} from "./classes/login";
 export class LoginComponent implements OnInit {
 
     constructor(public router: Router, private auth: authService) { }
-
+    public errorLoggedIn = false;
+    public message = null;
     ngOnInit() {
     }
 
      login: Login = new Login();
-    onLoggedin(form) {
+     onLoggedin(form) {
         let response = this.auth.login({username:form.value.username, password:form.value.password});
-        console.log(response);
         response.$observable.toPromise().then((res:any) => {
             if(res.access_token){
                 localStorage.setItem('access_token', res.access_token);
+                localStorage.setItem('user', JSON.stringify(res.user));
                 localStorage.setItem('isLoggedin', 'true');
                 this.router.navigate(['/dashboard']);
-            }else{
+            }else if(res.error){
+
+                this.errorLoggedIn = true;
+                this.message = res.message;
                 this.router.navigate(['/login']);
             }
         },
             (error:any) => {
-                alert('you cant logged in');
+                this.errorLoggedIn = true;
             }
         );
 

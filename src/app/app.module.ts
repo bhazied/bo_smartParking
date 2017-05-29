@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { NgProgressModule } from "ngx-progressbar/progress.module";
+import  { ToastrModule } from "ngx-toastr";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
@@ -34,6 +35,7 @@ export function HttpLoaderFactory(http: Http) {
         }),
         NgProgressModule,
         ResourceModule.forRoot(),
+        ToastrModule.forRoot()
     ],
     providers: [AuthGuard, { provide: BrowserXhr, useClass: NgProgressCustomBrowserXhr }],
     bootstrap: [AppComponent]
